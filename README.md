@@ -1,0 +1,1 @@
+Built on https://github.com/yusukebe/honox-examples/tree/main/projects/basic
