@@ -1,56 +1,54 @@
-import { css } from 'hono/css'
-import { Suspense, ErrorBoundary } from 'hono/jsx'
-import { createRoute } from 'honox/factory'
-import Counter from '../islands/counter'
+import { Suspense, ErrorBoundary } from "hono/jsx";
+import { createRoute } from "honox/factory";
+import Counter from "../islands/counter";
 
-const ChildContent3 = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  throw new Error('Error in child content 3')
-}
-
-const ChildContent2 = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
+const FizzBuzzCounter = async ({
+  count,
+  upto,
+}: {
+  count: number;
+  upto: number;
+}) => {
+  await new Promise((resolve) => setTimeout(resolve, count === 0 ? 2000 : 200));
+  if (count > upto) {
+    return <p>Done!</p>;
+  }
   return (
-    <>
-      <p>Counter children 2</p>
-      <ErrorBoundary fallback={<p>Something went wrong</p>}>
-        <Suspense fallback="<p>Loading...</p>">
-          <ChildContent3 />
-        </Suspense>
-      </ErrorBoundary>
-    </>
-  )
-}
-
-const ChildContent1 = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  return (
-    <>
-      <p>Counter children 1</p>
-      <Suspense fallback="<p>Loading...</p>">
-        <ChildContent2 />
-      </Suspense>
-    </>
-  )
-}
-
-const Children = async () => {
-  return (
-    <Suspense fallback="<p>Loading...</p>">
-      <ChildContent1 />
+    <Suspense
+      fallback={
+        <p>
+          {count % 3 === 0 && count % 5 === 0
+            ? "FizzBuzz"
+            : count % 3 === 0
+            ? "Fizz"
+            : count % 5 === 0
+            ? "Buzz"
+            : count}
+        </p>
+      }
+    >
+      <FizzBuzzCounter count={count + 1} upto={30} />
     </Suspense>
-  )
-}
+  );
+};
+
+const FizzBuzz = async () => {
+  return (
+    <Suspense fallback="<p>Thinking...</p>">
+      <FizzBuzzCounter count={0} upto={100} />
+    </Suspense>
+  );
+};
 
 export default createRoute((c) => {
-  const name = c.req.query('name') ?? 'no name'
+  const name = c.req.query("name") ?? "no name";
   return c.render(
     <div>
       <h1>Hello, {name}!</h1>
       <Counter>
-        <Children />
+        <FizzBuzz />
       </Counter>
     </div>,
     { title: name }
-  )
-})
+  );
+});
