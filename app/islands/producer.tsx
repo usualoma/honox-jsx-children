@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "hono/jsx";
 import { useAppContext } from "./app-context";
 
-export default function Producer({ children }: PropsWithChildren<{}>) {
+export default function Counter({ children }: PropsWithChildren<{}>) {
   const [, updateCount] = useAppContext();
   return (
     <div>

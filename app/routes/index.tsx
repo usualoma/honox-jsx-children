@@ -7,6 +7,7 @@ export default createRoute((c) => {
   return c.render(
     <div>
       <h1>Hello, {name}!</h1>
+      <h2>Producer</h2>
       <Producer/>
       <h2>Consumer</h2>
       <Consumer/>

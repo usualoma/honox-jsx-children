@@ -2,10 +2,8 @@ import { createContext, useContext } from "hono/jsx";
 import { ACTIONS } from "./app-reducer";
 
 export type AppContextType = [number, ({ type }: { type: ACTIONS }) => void];
-const AppContext = createContext<AppContextType | undefined>(undefined);
+const AppContext = createContext<AppContextType>([0, () => {}]);
 
-export function useAppContext() {
-  return useContext(AppContext) as AppContextType;
-}
+export const useAppContext = () => useContext(AppContext);
 
 export default AppContext;
